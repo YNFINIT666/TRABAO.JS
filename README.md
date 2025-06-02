@@ -1,4 +1,4 @@
-controllers:
+Controllers:
 product:
 const { v4: uuidv4 } = require("uuid");
 const products = require("../database/products");
