@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste da API QR Code</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f0f0f0;
+    }
+    input, button {
+      font-size: 16px;
+      padding: 8px;
+    }
+    #produto {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 Testar API QR Code</h1>
+
+  <label for="id">Digite o ID do produto:</label><br>
+  <input type="text" id="id" placeholder="Ex: abc123" />
+  <button onclick="buscarProduto()">Buscar Produto</button>
+
+  <div id="produto"></div>
+
+  <script>
+    async function buscarProduto() {
+      const id = document.getElementById("id").value;
+      const resultado = document.getElementById("produto");
+
+      try {
+        const response = await fetch(`http://localhost:3000/api/products/${id}`);
+        if (!response.ok) throw new Error("Produto não encontrado");
+
+        const produto = await response.json();
+        resultado.innerHTML = `
+          <h2>${produto.name}</h2>
+          <p><strong>Ingredientes:</strong> ${produto.ingredients.join(", ")}</p>
+          <p><strong>Selo:</strong> ${produto.seal}</p>
+          <p><strong>Aviso:</strong> ${produto.warning}</p>
+        `;
+      } catch (err) {
+        resultado.innerHTML = `<p style="color:red">${err.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
